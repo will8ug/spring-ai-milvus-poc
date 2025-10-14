@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: spring-ai-poc
+  profiles:
+    active: qwen
+  ai:
+    vectorstore:
+      milvus:
+        client:
+          host: ${MILVUS_HOST}
+          port: 19530
+          username: ${MILVUS_USER}
+          password: ${MILVUS_PWD}
+        initialize-schema: true
+        database-name: "default"
+        collection-name: "spring_ai_poc"
+        embedding-dimension: 128
+
+server:
+  port: 9005
+
+logging:
+  level:
+    root: INFO
+    io.will.springaipoc: DEBUG
+    org.springframework.ai.chat.client.advisor: DEBUG
