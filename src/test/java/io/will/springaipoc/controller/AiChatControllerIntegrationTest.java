@@ -1,5 +1,6 @@
 package io.will.springaipoc.controller;
 
+import io.will.springaipoc.controller.model.ChatRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,11 @@ class AiChatControllerIntegrationTest {
 
     @Test
     void testChat_givenValidQuestion_whenCallingChatEndpoint_thenReturnNonEmptyResponse() {
+        ChatRequest chatRequest = new ChatRequest("Hello", null);
         webTestClient.post()
                 .uri("/ai/chat")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("{\"question\": \"Hello\"}")
+                .bodyValue(chatRequest)
                 .exchange()
                 .expectStatus().isOk()
                 .returnResult(String.class)
@@ -47,10 +49,11 @@ class AiChatControllerIntegrationTest {
 
     @Test
     void testStreamChat_givenValidQuestion_whenCallingStreamChatEndpoint_thenReturnStreamOfResponses() {
+        ChatRequest chatRequest = new ChatRequest("Hello", "test-hello-chat-stream-001");
         Flux<String> responseFlux = webTestClient.post()
                 .uri("/ai/chat/stream")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("{\"question\": \"Hello\"}")
+                .bodyValue(chatRequest)
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM)
